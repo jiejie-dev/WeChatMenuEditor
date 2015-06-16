@@ -1,0 +1,409 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title></title>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script>
+	var menu_default = {
+                                "button": [
+                                    {
+                                        "type": "view", 
+                                        "name": "长得帅", 
+                                        "url": "http://lujiejie.com"
+                                    }, 
+                                    {
+                                        "name": "菜单", 
+                                        "sub_button": [
+                                            {
+                                                "type": "view", 
+                                                "name": "百度", 
+                                                "url": "http://www.soso.com/"
+                                            }, 
+                                            {
+                                                "type": "view", 
+                                                "name": "腾讯视频", 
+                                                "url": "http://v.qq.com/"
+                                            }, 
+                                            {
+                                                "type": "view", 
+                                                "name": "腾讯网", 
+                                                "url": "http://www.qq.com/"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            };
+
+	
+	var selected_top_item;
+	var selected_sub_item;
+	
+    var menu_current;
+
+	$(document).ready(function (){
+		loadEmpty();
+
+		resgister();
+		$(".btnDeleteTopItem").click(function (){
+			deleteTopItem();
+		});
+		$(".btnAddTopItem").click(function (){
+			addTopItem();
+		});
+		$(".btnAddSubItem").click(function () {
+			addSubItem();
+		})
+		$(".btnDeleteSubItem").click(function () {
+			deleteSubItem();
+		})
+		$("#save").click(function (){
+			save();
+		});
+		$('#itemTopEdit').on('show.bs.modal', function () {
+			if(getTopSeletedItemIndex()>-1){
+				var button = menu_current.button[getTopSeletedItemIndex()];
+				$("#top_menu_name").val(button.name);
+				if(button.hasOwnProperty("type")){
+					$("#top_menu_action").val(button.type);				
+				}
+				else{
+					$("#top_menu_action").val("sub_button");
+				}
+				if(button.hasOwnProperty("url")){
+					$("#top_menu_content").val(button.url);				
+				}	
+			}
+			
+		});
+		$('#itemSubEdit').on('show.bs.modal', function () {
+			if(getSubSeletedItemIndex()>-1){
+				var sub_button = menu_current.button[getTopSeletedItemIndex()].sub_button[getSubSeletedItemIndex()];
+				$("#sub_menu_name").val(sub_button.name);
+				if(sub_button.hasOwnProperty("type")){
+					$("#sub_menu_action").val(sub_button.type);
+				}
+				else{
+					$("#sub_menu_action").val(sub_button.type);
+				}
+				if(sub_button.hasOwnProperty("url")){
+					$("#sub_menu_content").val(sub_button.url);
+				}	
+			}
+			
+		});
+	});
+	function getTopSeletedItemIndex() {
+		return getTopItemIndex(selected_top_item);
+	}
+	function getTopItemIndex(item) {
+		var item_index = -1;
+		$(".top_level_item").each(function(index) {
+			if($(item).text()==$(this).text()){
+				item_index = index;
+				return false;
+			}
+		});
+		return item_index;
+	}
+	function getSubSeletedItemIndex() {
+		return getSubItemIndex(selected_sub_item);
+	}
+	function getSubItemIndex(item) {
+		var item_index = -1;
+		$(".sub_level_item").each(function(index) {
+			if($(item).text()==$(this).text()){
+				item_index = index;
+				return false;
+			}
+		});
+		return item_index;
+	}
+	function isSubMenu(button) {
+		if(button.hasOwnProperty("url")){
+			return false;
+		}
+		if(button.hasWonProperty("sub_button")){
+			return true;
+		}
+		return false;
+	}
+	function saveTopMenuItem() {
+		alert("保存成功");
+		$("#itemTopEdit").modal("hide");
+	}
+	function saveSubMenuItem() {
+		alert("保存成功");
+		$("#itemSubEdit").modal("hide");
+	}
+	function save(){
+		alert($(".top_level_item").length);
+		alert("保存成功！");
+	}
+
+	function loadEmpty(){
+		topItemEmpty();
+		subItemEmpty();
+		
+	}
+	function topItemEmpty(){
+		$(".top_level_item").each(function(index){
+			$(this).remove();
+		});
+	}
+	function subItemEmpty(){
+		$(".sub_level_item").each(function(index){
+			$(this).remove();
+		});
+	}
+	function loadDefault(){
+		menu_current = menu_default;
+		loadMenu(menu_current);
+	}
+
+	function loadMenu(menu){
+		loadEmpty();
+		for(var i=0; i<menu.button.length; i++){
+			var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
+			$(addItem).text(menu_default.button[i].name);
+			$(addItem).attr("id","top_level_item_id_" + i);
+			resgister();
+		}
+	}
+
+	function addTopItem(){
+		var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
+		$(addItem).text("新建菜单项");
+		$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
+		var button = new Object();
+		button.name = "新建菜单项";
+		menu_current.button.push(button);
+		registerTopItem(addItem);
+	}
+
+	function addSubItem(){
+		var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
+		$(addItem).text("temp");
+		registerSubItem(addItem);
+	}
+	
+	function deleteTopItem(){
+		$(selected_top_item).remove();
+		selected_top_item = null;
+	}
+
+	function deleteSubItem(){
+		$(selected_sub_item).remove();
+		selected_sub_item = null;
+	}
+
+	function registerTopItem(item){
+		$(item).click(function (){
+			$(".top_level_box .top_level_item").each(function(index){
+				$(this).css("background-color","white");
+			});
+			$(this).css("background-color","yellow");
+			selected_top_item = $(this);
+			subItemEmpty();
+			var index = parseInt($(this).attr("id").replace("top_level_item_id_",""));
+			
+			$(".sub_level_manager").find("font").text(menu_current.button[index].name);
+
+			if(menu_current.button[index].hasOwnProperty("type")){
+				if(menu_current.button[index].type == "view"){
+					if(menu_current.button[index].hasOwnProperty("url")){
+						//subItemEmpty();
+						//var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"))
+						//$(addItem).text(menu_current.button[index].name);
+						//registerSubItem(addItem);
+					}
+
+				}
+				else{
+						alert("key"+menu_current.button[index].key);
+				}
+			}
+			else{
+				if(menu_current.button[index].hasOwnProperty("sub_button")){
+						for(var i =0;i<menu_current.button[index].sub_button.length;i++){
+						var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
+						$(addItem).text(menu_current.button[index].sub_button[i].name);
+						registerSubItem(addItem);
+					}	
+				}
+								
+			}
+		});
+	}
+	function registerSubItem(item){
+		$(item).click(function (){
+			$(".sub_level_view .sub_level_item").each(function(index){
+				$(this).css("background-color","white");
+			});
+			$(this).css("background-color","yellow");
+			selected_sub_item = $(this);
+		});
+	}
+	function resgister(){
+		$(".top_level_box .top_level_item").click(function (){
+				registerTopItem($(this));
+		});
+
+		$(".sub_level_view .sub_level_item").click(function (){
+			registerSubItem($(this));
+		});
+	}
+	
+	function writeObj(obj){ 
+	    var description = ""; 
+	    for(var i in obj){   
+	        var property=obj[i];   
+	        description+=i+" = "+property+"\n";  
+	    }   
+	    alert(description); 
+	} 
+</script>
+<style type="text/css">
+	
+</style>
+</head>
+<body>
+	<div class="design_box container">
+		<div class="row">
+			<div class="top_btn_box col-md-12">
+				<button class="btn btn-default" onClick="loadRemote()">加载现有微信菜单</button>
+				<button class="btn btn-default" onClick="loadEmpty()">加载空菜单</button>
+				<button class="btn btn-default" onClick="loadDefault()">加载模板</button>
+			</div>	
+		</div>
+		<div class="col-md-12"><br></div>
+		<div class="row">
+			<div class="top_level_box col-md-4">
+				<ul class="list-group">
+					<li class="list-group-item top_level_manager">
+						一级菜单
+						<span class="badge"><a href="#" data-toggle="modal" data-target="#itemTopEdit">编辑</a></span>
+						<span class="badge"><a href="#" class="btnAddTopItem">添加</a></span>
+						<span class="badge"><a class="btnDeleteTopItem" href="#">删除</a></span>
+					</li>
+					<li class="list-group-item top_level_item">lujiejie</li>
+					<li class="list-group-item top_level_item">lidapeng</li>
+					<li class="list-group-item top_level_item">zhouenlai</li>
+				</ul>
+			</div>
+			<div class="sub_level_view col-md-8">
+				<ul class="list-group">
+					<li class="list-group-item sub_level_manager">
+						<font>二级菜单</font>
+						<span class="badge"><a href="#" data-toggle="modal" data-target="#itemSubEdit">编辑</a></span>
+						<span class="badge"><a class="btnDeleteSubItem" href="#">删除</a></span>
+						<span class="badge"><a class="btnAddSubItem" href="#">添加</a></span>							
+					</li>
+					<li class="list-group-item sub_level_item">lujiejie1</li>
+					<li class="list-group-item sub_level_item">lujiejie2</li>
+					<li class="list-group-item sub_level_item">lujiejie3</li>
+				</ul>
+			</div>
+			<br>
+			<div class="footer_btn_box col-md-12">
+				<button class="btn btn-default col-md-2 col-md-offset-5" id="save">保存</button>
+			</div>
+		</div>
+		
+	</div>
+
+	<!-- 模态框（Modal） -->
+<div class="modal fade" id="itemTopEdit" tabindex="-1" role="dialog" 
+   aria-labelledby="itemTopEditLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="itemTopEditLabel">
+               编辑菜单
+            </h4>
+         </div>
+         <div class="modal-body">
+            <form role="form" class="form-horizontal">
+            		<div class="form-group">
+            			<label for="top_menu_name">菜单名称</label>
+            			<input id="top_menu_name" name="top_menu_name" class="form-control" type="text" /> 
+            		</div>
+					<div class="form-group">
+						<label for="top_menu_action">点击动作</label>
+							<select class="form-control" id="top_menu_action" name="top_menu_action">
+								<option value="sub_button">打开二级菜单</option>
+								<option value="view">打开一个网页</option>	
+								<option value="click">打开微信素材</option>							
+							</select>
+					</div>
+					<div class="form-group">
+						<label for="top_menu_content">菜单内容</label>
+						<input type="text" class="form-control" id="top_menu_content" name="top_menu_content" />
+					</div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" onclick="saveTopMenuItem()" class="btn btn-primary">
+               保存
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+	</div>
+</div><!-- /.modal -->
+
+	<!-- 模态框（Modal） -->
+<div class="modal fade" id="itemSubEdit" tabindex="-1" role="dialog" 
+   aria-labelledby="itemSubEditLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="itemSubEditLabel">
+               编辑菜单
+            </h4>
+         </div>
+         <div class="modal-body">
+            <form role="form" class="form-horizontal">
+            		<div class="form-group">
+            			<label for="sub_menu_name">菜单名称</label>
+            			<input id="sub_menu_name" name="sub_menu_name" class="form-control" type="text" /> 
+            		</div>
+					<div class="form-group">
+						<label for="sub_menu_action">点击动作</label>
+							<select class="form-control" id="sub_menu_action">
+								<option value="click">打开微信素材</option>
+								<option value="view">打开一个网页</option>								
+							</select>
+					</div>
+					<div class="form-group">
+						<label for="sub_menu_content">菜单内容</label>
+						<input type="text" class="form-control" name="sub_menu_content" id="sub_menu_content" />
+					</div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" onclick="saveSubMenuItem()" class="btn btn-primary">
+               保存
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+	</div>
+</div><!-- /.modal -->
+
+</body>
+</html>
