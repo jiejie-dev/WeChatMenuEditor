@@ -1,3 +1,9 @@
+function MEditor(){
+	var container;
+	this.render = function (container_id) {
+		container
+	}
+}
 var debug_mode = true;
 	var menu_default = {
                                 "button": [
