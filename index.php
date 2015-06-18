@@ -61,7 +61,7 @@ function wxmenu_html_page() {
               </div>
             </div>
             <p>  
-                <textarea  
+                <textarea  width="600px"
                     name="buttons" 
                     id="buttons" 
                     cols="40" 
