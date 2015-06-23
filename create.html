@@ -9,6 +9,13 @@
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script>
 	var debug_mode = true;
+	
+	var config = {
+		"remote_view_url":"",
+		"remote_delete_url":"",
+		"remote_create_url":""
+	};
+	
 	var menu_default = {
                                 "button": [
                                     {
@@ -48,8 +55,7 @@
 	$(document).ready(function (){
 		loadEmpty();
 		loadLocal();
-		
-		resgister();
+		checkItemIsTopForRightVisiable();
 		$(".btnDeleteTopItem").click(function (){
 			deleteTopItem();
 		});
@@ -99,6 +105,21 @@
 		});
 	});
 	
+	function checkItemIsTopForRightVisiable(){
+		if(selected_top_item==null){
+			DebugLog("selected_top_item is null");
+			$(".sub_level_view").hide();
+		}else{
+			if(!hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
+				$(".sub_level_view").hide();
+				DebugLog("当前一级菜单没有子菜单！")
+			}else{
+				$(".sub_level_view").show();
+				DebugLog("当前一级菜单有子菜单！")
+			}
+		}
+	}
+	
 	function getTopSeletedItemIndex() {
 		return getTopItemIndex(selected_top_item);
 	}
@@ -129,14 +150,12 @@
 		return item_index;
 	}
 	
-	function isSubMenu(button) {
-		if(button.hasOwnProperty("url")){
-			return false;
-		}
-		if(button.hasWonProperty("sub_button")){
+	function hasSubMenu(_button) {
+		if(_button.hasOwnProperty("sub_button")){
 			return true;
+		}else{
+			return false;			
 		}
-		return false;
 	}
 	
 	function saveTopMenuItem() {
@@ -155,8 +174,9 @@
 		
 		DebugLog("save top menu item :");
 		DebugLog(JSON.stringify(menu_current));
-		
+		checkItemIsTopForRightVisiable();
 		saveLocal();
+		loadMenu(menu_current);
 	}
 	
 	function saveSubMenuItem() {
@@ -219,6 +239,16 @@
 		loadEmpty();
 	}
 	
+	function loadRemote(url){
+		var remoteMenuContent = $.ajax({
+			type:"get",
+			url:config.remote_view_url,
+			async:false
+		});
+		DebugLog("remote menu :");
+		DebugLog(remoteMenuContent);
+	}
+	
 	function emptyTopItemHtml () {
 		$(".top_level_item").each(function(index){
 			$(this).remove();
@@ -255,6 +285,10 @@
 	}
 
 	function loadMenu(menu){
+		if(menu_current!=null){
+			loadEmpty();	
+		}
+		
 		DebugLog(JSON.stringify(menu));
 		menu_current = menu;
 		emptyTopItemHtml();
@@ -268,35 +302,54 @@
 	}
 
 	function addTopItem(){
-		var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
-		$(addItem).text("一级菜单");
-		$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
-		var button = new Object();
-		button.name = "一级菜单";
-		menu_current.button.push(button);
-		registerTopItem(addItem);
+		if($(".top_level_item").length>=3){
+			alert("一级菜单不能超过三个！");
+		}else{
+			var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
+			$(addItem).text("一级菜单");
+			$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
+			var button = new Object();
+			button.name = "一级菜单";
+			menu_current.button.push(button);
+			registerTopItem(addItem);
+			checkItemIsTopForRightVisiable();
+		}
 	}
 
 	function addSubItem(){
-		var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
-		$(addItem).text("二级菜单");
-		var sub_button = new Object();
-		sub_button.name = "二级菜单";
-		menu_current.button[getTopSeletedItemIndex()].sub_button.push(sub_button);
-		registerSubItem(addItem);
+		if($(".sub_level_item").length>=5){
+			alert("二级菜单不能超过五个！");
+		}else{
+			if(hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
+				var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
+				$(addItem).text("二级菜单");
+				var sub_button = new Object();
+				sub_button.name = "二级菜单";
+				menu_current.button[getTopSeletedItemIndex()].sub_button.push(sub_button);
+				registerSubItem(addItem);	
+			}
+			else{
+				alert("当前一级菜单不能添加子菜单！");
+			}
+		}
 	}
 	
 	function deleteTopItem(){
+		emptySelectedTopItemData();
 		$(selected_top_item).remove();
 		selected_top_item = null;
+		saveLocal();
 	}
 
 	function deleteSubItem(){
+		emptySelectedSubItemData();
 		$(selected_sub_item).remove();
 		selected_sub_item = null;
+		saveLocal();
 	}
 
 	function registerTopItem(item){
+		$(item).unbind("click");
 		$(item).click(function (){
 			$(".top_level_box .top_level_item").each(function(index){
 				$(this).css("background-color","white");
@@ -308,19 +361,8 @@
 
 			$(".sub_level_manager").find("font").text(menu_current.button[index].name);
 
-			if(menu_current.button[index].hasOwnProperty("type")){
-				if(menu_current.button[index].type == "view"){
-					if(menu_current.button[index].hasOwnProperty("url")){
-						//subItemEmpty();
-						//var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"))
-						//$(addItem).text(menu_current.button[index].name);
-						//registerSubItem(addItem);
-					}
-
-				}
-				else{
-						alert("key"+menu_current.button[index].key);
-				}
+			if(!hasSubMenu(menu_current.button[index])){
+				
 			}
 			else{
 				if(menu_current.button[index].hasOwnProperty("sub_button")){
@@ -331,10 +373,12 @@
 					}	
 				}
 			}
+			checkItemIsTopForRightVisiable();
 		});
 	}
 	
 	function registerSubItem(item){
+		$(item).unbind("click");
 		$(item).click(function (){
 			$(".sub_level_view .sub_level_item").each(function(index){
 				$(this).css("background-color","white");
@@ -347,6 +391,7 @@
 	function resgister(){
 		$(".top_level_box .top_level_item").click(function (){
 				registerTopItem($(this));
+				
 		});
 
 		$(".sub_level_view .sub_level_item").click(function (){
