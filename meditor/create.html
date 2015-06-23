@@ -9,19 +9,9 @@
    	<script type="text/javascript" src="meditor.js" ></script>
    	<script type="text/javascript">
 	   	$(document).ready(function (){
-	   		var editor = new MEditor();
-	   		editor.render("editor");
-	   		editor.loadDefault();
-	   		
-	   		$("#btnLoadEmpty").click(function () {
-	   			editor.loadEmpty();
-	   		});
-	   		$("#btnLoadDefault").click(function () {
-	   			editor.loadDefault();
-	   		});
-	   		$("#btnLoadRemote").click(function () {
-	   			editor.loadRemote();
-	   		});
+	   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
+	   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
+	   		editor.loadLocal();			//加载本地缓存菜单
 	   	});
 	   	
    	</script>
@@ -30,20 +20,12 @@
 </style>
 </head>
 <body>
-	<br />
-	<div class="main container">
-		<div class="display_box">
-			<div class="control_panel">
-				<button id="btnLoadRemote" class="btn btn-default">加载现有微信菜单</button>
-				<button id="btnLoadEmpty" class="btn btn-default">加载空菜单</button>
-				<button id="btnLoadDefault" class="btn btn-default">加载模板</button>
-			</div>
-		</div>
-		<br />
-		<div id="editor">
-			
-		</div>
+	<div id="editor" class="container">
+		<!--
+        	作者：1006397539@qq.com
+        	时间：2015-06-23
+        	描述：微信自定义菜单编辑器demo
+        -->
 	</div>
-	
 </body>
 </html>

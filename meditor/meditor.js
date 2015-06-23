@@ -1,10 +1,41 @@
+//
+// Name : MEditor (微信自定义菜单编辑器)
+// Author : Jeremaihloo (卢杰杰)
+// Home : lujiejie.com
+//
+
 function MEditor(){
 	var container;
+	
 	this.render = function (container_id) {
-		container
+		container = container_id;
+		var ui;
+		$.get("ui.html",function(data){
+			console.log("ui" + data);
+			$("#" + container).append(data);
+			init_ready();		
+		});
+		
 	}
-}
-var debug_mode = true;
+	this.loadDefault = function () {
+		loadDefault();
+	}
+	this.loadLocal = function(){
+		loadLocal();
+	}
+	this.loadEmpty = function(){
+		loadEmpty();
+	}
+	this.loadMenu = function(menu){
+		loadMenu(menu);
+	}
+
+	var config = {
+		"remote_view_url":"",
+		"remote_delete_url":"",
+		"remote_create_url":""
+	};
+	
 	var menu_default = {
                                 "button": [
                                     {
@@ -41,12 +72,28 @@ var debug_mode = true;
 	
     var menu_current;
 
-	$(document).ready(function (){
-		loadEmpty();
+    function init_ready () {
+    	loadEmpty();
 		loadLocal();
+		checkItemIsTopForRightVisiable();
 		
-		resgister();
-		
+		//control panel buttons
+		$("#btnLoadRemote").click(function () {
+   			loadRemote();
+   		});
+   		$("#btnLoadLocal").click(function(){
+   			loadLocal();
+   		});
+   		$("#btnClearLocal").click(function(){
+   			clearLocal();
+   		});
+   		$("#btnLoadEmpty").click(function () {
+   			loadEmpty();
+   		});
+   		$("#btnLoadDefault").click(function () {
+   			loadDefault();
+   		});
+		//----------------------------------------
 		$(".btnDeleteTopItem").click(function (){
 			deleteTopItem();
 		});
@@ -94,7 +141,22 @@ var debug_mode = true;
 			}
 			
 		});
-	});
+    }
+
+	function checkItemIsTopForRightVisiable(){
+		if(selected_top_item==null){
+			console.log("selected_top_item is null");
+			$(".sub_level_view").hide();
+		}else{
+			if(!hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
+				$(".sub_level_view").hide();
+				console.log("当前一级菜单没有子菜单！")
+			}else{
+				$(".sub_level_view").show();
+				console.log("当前一级菜单有子菜单！")
+			}
+		}
+	}
 	
 	function getTopSeletedItemIndex() {
 		return getTopItemIndex(selected_top_item);
@@ -126,14 +188,12 @@ var debug_mode = true;
 		return item_index;
 	}
 	
-	function isSubMenu(button) {
-		if(button.hasOwnProperty("url")){
-			return false;
-		}
-		if(button.hasWonProperty("sub_button")){
+	function hasSubMenu(_button) {
+		if(_button.hasOwnProperty("sub_button")){
 			return true;
+		}else{
+			return false;			
 		}
-		return false;
 	}
 	
 	function saveTopMenuItem() {
@@ -150,10 +210,11 @@ var debug_mode = true;
 		
 		$("#itemTopEdit").modal("hide");
 		
-		DebugLog("save top menu item :");
-		DebugLog(JSON.stringify(menu_current));
-		
+		console.log("save top menu item :");
+		console.log(JSON.stringify(menu_current));
+		checkItemIsTopForRightVisiable();
 		saveLocal();
+		loadMenu(menu_current);
 	}
 	
 	function saveSubMenuItem() {
@@ -169,19 +230,19 @@ var debug_mode = true;
 		}
 		$("#itemSubEdit").modal("hide");
 		
-		DebugLog("save sub menu item :");
-		DebugLog(JSON.stringify(menu_current));
+		console.log("save sub menu item :");
+		console.log(JSON.stringify(menu_current));
 		
 		saveLocal();
 	}
 	
 	function saveLocal(){
 		localStorage.WX_MENU = JSON.stringify(menu_current);	
-		DebugLog("save local successed !");
+		console.log("save local successed !");
 	}
 	
 	function save(){
-		DebugLog(JSON.stringify(menu_current));
+		console.log(JSON.stringify(menu_current));
 		saveLocal();
 		alert("保存成功！");
 	}
@@ -190,6 +251,7 @@ var debug_mode = true;
 		menu_current = {
 			"button":[]
 		};
+		console.log("load empty menu_current :"+JSON.stringify(menu_current));
 		emptyTopItemHtml();
 		emptySubItemHtml();
 	}
@@ -197,17 +259,17 @@ var debug_mode = true;
 	function loadLocal () {
 		if(window.localStorage){
 			if(localStorage.WX_MENU){
-				DebugLog("local menu :")
-				DebugLog(localStorage.WX_MENU);
+				console.log("local menu :")
+				console.log(localStorage.WX_MENU);
 				var menu = JSON.parse(localStorage.WX_MENU);
 				loadMenu(menu);
 			}
 			else{
-				DebugLog("do not exist local menu");
+				console.log("do not exist local menu");
 			}
 		}
 		else{
-			DebugLog("browser don't support localStorage");
+			console.log("browser don't support localStorage");
 		}
 	}
 	
@@ -216,11 +278,17 @@ var debug_mode = true;
 		loadEmpty();
 	}
 	
-	function emptyTopItemHtml () {
-		$(".top_level_item").each(function(index){
-			$(this).remove();
+	function loadRemote(url){
+		var remoteMenuContent = $.ajax({
+			type:"get",
+			url:config.remote_view_url,
+			async:false
 		});
+		console.log("remote menu :");
+		console.log(remoteMenuContent);
 	}
+	
+	
 	
 	function emptySelectedTopItemData () {
 		if(menu_current.button.length>0){
@@ -248,11 +316,16 @@ var debug_mode = true;
 	}
 	
 	function loadDefault(){
+		console.log("load default...");
 		loadMenu(menu_default);
 	}
 
 	function loadMenu(menu){
-		DebugLog(JSON.stringify(menu));
+		if(menu_current!=null){
+			loadEmpty();
+		}
+		
+		console.log("load menu :" + JSON.stringify(menu));
 		menu_current = menu;
 		emptyTopItemHtml();
 		emptySubItemHtml();
@@ -265,35 +338,54 @@ var debug_mode = true;
 	}
 
 	function addTopItem(){
-		var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
-		$(addItem).text("一级菜单");
-		$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
-		var button = new Object();
-		button.name = "一级菜单";
-		menu_current.button.push(button);
-		registerTopItem(addItem);
+		if($(".top_level_item").length>=3){
+			alert("一级菜单不能超过三个！");
+		}else{
+			var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
+			$(addItem).text("一级菜单");
+			$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
+			var button = new Object();
+			button.name = "一级菜单";
+			menu_current.button.push(button);
+			registerTopItem(addItem);
+			checkItemIsTopForRightVisiable();
+		}
 	}
 
 	function addSubItem(){
-		var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
-		$(addItem).text("二级菜单");
-		var sub_button = new Object();
-		sub_button.name = "二级菜单";
-		menu_current.button[getTopSeletedItemIndex()].sub_button.push(sub_button);
-		registerSubItem(addItem);
+		if($(".sub_level_item").length>=5){
+			alert("二级菜单不能超过五个！");
+		}else{
+			if(hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
+				var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
+				$(addItem).text("二级菜单");
+				var sub_button = new Object();
+				sub_button.name = "二级菜单";
+				menu_current.button[getTopSeletedItemIndex()].sub_button.push(sub_button);
+				registerSubItem(addItem);	
+			}
+			else{
+				alert("当前一级菜单不能添加子菜单！");
+			}
+		}
 	}
 	
 	function deleteTopItem(){
+		emptySelectedTopItemData();
 		$(selected_top_item).remove();
 		selected_top_item = null;
+		saveLocal();
 	}
 
 	function deleteSubItem(){
+		emptySelectedSubItemData();
 		$(selected_sub_item).remove();
 		selected_sub_item = null;
+		saveLocal();
 	}
 
 	function registerTopItem(item){
+		$(item).unbind("click");
 		$(item).click(function (){
 			$(".top_level_box .top_level_item").each(function(index){
 				$(this).css("background-color","white");
@@ -305,19 +397,8 @@ var debug_mode = true;
 
 			$(".sub_level_manager").find("font").text(menu_current.button[index].name);
 
-			if(menu_current.button[index].hasOwnProperty("type")){
-				if(menu_current.button[index].type == "view"){
-					if(menu_current.button[index].hasOwnProperty("url")){
-						//subItemEmpty();
-						//var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"))
-						//$(addItem).text(menu_current.button[index].name);
-						//registerSubItem(addItem);
-					}
-
-				}
-				else{
-						alert("key"+menu_current.button[index].key);
-				}
+			if(!hasSubMenu(menu_current.button[index])){
+				
 			}
 			else{
 				if(menu_current.button[index].hasOwnProperty("sub_button")){
@@ -328,10 +409,12 @@ var debug_mode = true;
 					}	
 				}
 			}
+			checkItemIsTopForRightVisiable();
 		});
 	}
 	
 	function registerSubItem(item){
+		$(item).unbind("click");
 		$(item).click(function (){
 			$(".sub_level_view .sub_level_item").each(function(index){
 				$(this).css("background-color","white");
@@ -344,6 +427,7 @@ var debug_mode = true;
 	function resgister(){
 		$(".top_level_box .top_level_item").click(function (){
 				registerTopItem($(this));
+				
 		});
 
 		$(".sub_level_view .sub_level_item").click(function (){
@@ -359,9 +443,14 @@ var debug_mode = true;
 	    }   
 	    alert(description); 
 	} 
-	
-	function DebugLog (message) {
-		if(debug_mode){
-			console.log(message);
-		}
+
+}
+
+function emptyTopItemHtml () {
+		console.log("empty top item html")
+		console.log("top_level_item length :"+$(".top_level_box").length);
+		$(".top_level_item").each(function(index){
+			console.log($(this).text());
+			$(this).remove();
+		});
 	}
