@@ -3,19 +3,16 @@
 // Author : Jeremaihloo (卢杰杰)
 // Home : lujiejie.com
 //
-
+var ui = "";
 function MEditor(){
 	var container;
 	
 	this.render = function (container_id) {
 		container = container_id;
-		var ui;
-		$.get("ui.html",function(data){
-			console.log("ui" + data);
-			$("#" + container).append(data);
-			init_ready();		
-		});
 		
+		console.log("ui" + ui);
+		$("#" + container).append(ui);
+		init_ready();		
 	}
 	this.loadDefault = function () {
 		loadDefault();
@@ -29,11 +26,13 @@ function MEditor(){
 	this.loadMenu = function(menu){
 		loadMenu(menu);
 	}
-
+	this.setConfig = function(setConfig){
+		config = setConfig;
+	}
 	var config = {
-		"remote_view_url":"",
-		"remote_delete_url":"",
-		"remote_create_url":""
+		"remote_view_url":"/core/view-menu.op.php",
+		"remote_delete_url":"/core/delete-menu.op.php",
+		"remote_create_url":"/core/create-menu.op.php"
 	};
 	
 	var menu_default = {
@@ -279,16 +278,22 @@ function MEditor(){
 	}
 	
 	function loadRemote(url){
-		var remoteMenuContent = $.ajax({
-			type:"get",
-			url:config.remote_view_url,
-			async:false
-		});
-		console.log("remote menu :");
-		console.log(remoteMenuContent);
+		console.log("load remote url : "+url);
+		if(url!=null){
+			$.get(config.remote_view_url,function(data){
+				if(data!=null){
+					if(data.length>0){
+						loadMenu(eval(data));
+					}else{
+						console.log("data.length <=0 !");
+					}
+				}
+				else{
+					console.log("data is null !");
+				}
+			});	
+		}
 	}
-	
-	
 	
 	function emptySelectedTopItemData () {
 		if(menu_current.button.length>0){
@@ -435,18 +440,7 @@ function MEditor(){
 		});
 	}
 	
-	function writeObj(obj){ 
-	    var description = ""; 
-	    for(var i in obj){   
-	        var property=obj[i];   
-	        description+=i+" = "+property+"\n";  
-	    }   
-	    alert(description); 
-	} 
-
-}
-
-function emptyTopItemHtml () {
+	function emptyTopItemHtml () {
 		console.log("empty top item html")
 		console.log("top_level_item length :"+$(".top_level_box").length);
 		$(".top_level_item").each(function(index){
@@ -454,3 +448,6 @@ function emptyTopItemHtml () {
 			$(this).remove();
 		});
 	}
+	
+}
+

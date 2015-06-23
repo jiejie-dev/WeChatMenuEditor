@@ -1,0 +1,137 @@
+<br />
+<div class="display_box container">
+	<div class="control_panel container">
+		<button class="btn btn-default" id="btnLoadRemote">加载公众平台微信菜单</button>
+		<button class="btn btn-default" id="btnLoadLocal">加载本地缓存菜单</button>
+		<button class="btn btn-default" id="btnClearLocal">清空本地缓存菜单</button>
+		<button class="btn btn-default" id="btnLoadEmpty">加载空菜单</button>
+		<button class="btn btn-default" id="btnLoadDefault">加载模板</button>
+	</div>
+</div>
+<br />
+<div class="designer container">
+	<div class="top_level_box col-md-4">
+		<ul class="list-group">
+			<li class="list-group-item top_level_manager">
+				一级菜单
+				<span class="badge"><a href="#" data-toggle="modal" data-target="#itemTopEdit">编辑</a></span>
+				<span class="badge"><a href="#" class="btnAddTopItem">添加</a></span>
+				<span class="badge"><a class="btnDeleteTopItem" href="#">删除</a></span>
+			</li>
+			<li class="list-group-item top_level_item">lujiejie</li>
+			<li class="list-group-item top_level_item">lidapeng</li>
+			<li class="list-group-item top_level_item">zhouenlai</li>
+		</ul>
+	</div>
+	<div class="sub_level_view col-md-8">
+		<ul class="list-group">
+			<li class="list-group-item sub_level_manager">
+				<font>二级菜单</font>
+				<span class="badge"><a href="#" data-toggle="modal" data-target="#itemSubEdit">编辑</a></span>
+				<span class="badge"><a class="btnDeleteSubItem" href="#">删除</a></span>
+				<span class="badge"><a class="btnAddSubItem" href="#">添加</a></span>							
+			</li>
+			<li class="list-group-item sub_level_item">lujiejie1</li>
+			<li class="list-group-item sub_level_item">lujiejie2</li>
+			<li class="list-group-item sub_level_item">lujiejie3</li>
+		</ul>
+	</div>
+	<br>
+	<div class="footer_btn_box col-md-12">
+		<button class="btn btn-primary col-md-2 col-md-offset-5" id="save">保存</button>
+	</div>	
+</div>
+
+
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="itemTopEdit" tabindex="-1" role="dialog" 
+   aria-labelledby="itemTopEditLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="itemTopEditLabel">
+               编辑菜单
+            </h4>
+         </div>
+         <div class="modal-body">
+            <form role="form" class="form-horizontal">
+            		<div class="form-group">
+            			<label for="top_menu_name">菜单名称</label>
+            			<input id="top_menu_name" name="top_menu_name" class="form-control" type="text" /> 
+            		</div>
+					<div class="form-group">
+						<label for="top_menu_action">点击动作</label>
+							<select class="form-control" id="top_menu_action" name="top_menu_action">
+								<option value="sub_button">打开二级菜单</option>
+								<option value="view">打开一个网页</option>	
+								<option value="click">打开微信素材</option>							
+							</select>
+					</div>
+					<div class="form-group">
+						<label for="top_menu_content">菜单内容</label>
+						<input type="text" class="form-control" id="top_menu_content" name="top_menu_content" />
+					</div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" onclick="saveTopMenuItem()" class="btn btn-primary">
+               保存
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+	</div>
+</div><!-- /.modal -->
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="itemSubEdit" tabindex="-1" role="dialog" 
+   aria-labelledby="itemSubEditLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="itemSubEditLabel">
+               编辑菜单
+            </h4>
+         </div>
+         <div class="modal-body">
+            <form role="form" class="form-horizontal">
+            		<div class="form-group">
+            			<label for="sub_menu_name">菜单名称</label>
+            			<input id="sub_menu_name" name="sub_menu_name" class="form-control" type="text" /> 
+            		</div>
+					<div class="form-group">
+						<label for="sub_menu_action">点击动作</label>
+							<select class="form-control" id="sub_menu_action">
+								<option value="click">打开微信素材</option>
+								<option value="view">打开一个网页</option>								
+							</select>
+					</div>
+					<div class="form-group">
+						<label for="sub_menu_content">菜单内容</label>
+						<input type="text" class="form-control" name="sub_menu_content" id="sub_menu_content" />
+					</div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" onclick="saveSubMenuItem()" class="btn btn-primary">
+               保存
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+	</div>
+</div><!-- /.modal -->

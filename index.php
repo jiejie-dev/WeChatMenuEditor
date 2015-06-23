@@ -1,13 +1,15 @@
 <?php
 /*
-Plugin Name: 创建自定义菜单
+Plugin Name: 微信自定义菜单编辑器
 Plugin URI: 没有
-Description: 微信公众号创建自定义菜单
+Description: 微信公众号自定义菜单可视化编辑器
 Version: 1.0
 Author: 卢杰杰
 Author URI: lujiejie.com
 License: A "Slug" license name e.g. GPL2
 */
+
+$plugin_dir = WP_PLUGIN_URL."/".dirname(plugin_basename(__FILE__));
 
 /* 注册激活插件时要调用的函数 */ 
 register_activation_hook( __FILE__, 'wxmenu_install');   
@@ -33,78 +35,34 @@ if( is_admin() ) {
 function wxmenu_menu() {
     /* add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function);  */
     /* 页名称，菜单名称，访问级别，菜单别名，点击该菜单时的回调函数（用以显示设置页面） */
-    add_menu_page('微信自定义菜单', '微信自定义菜单', 'administrator','wxmenu', 'wxmenu_html_page');
+    add_menu_page('微信自定义菜单编辑器', '微信自定义菜单编辑器', 'administrator','wxmenu', 'wxmenu_html_page');
 }
 
 function wxmenu_html_page() {
-      include('config.inc.php');
-      include('Menu.models.php');
-      include('WeiXin.class.php');
-
-      $wx = WeiXin::getInstance();
-
-      $menu = $wx -> viewMenu();
-      if($menu['errcode']=='46003')
-        echo '还没有菜单！';
-      else
-        echo $menu;
+	global $plugin_dir;
+      
     ?>
-    <div class="container">  
-        <h2>微信自定义菜单</h2>  
-        <form class="form-horizontal" method="post" action="/wp-content/plugins/wxmenu/create-menu.op.php">  
-            <?php /* 下面这行代码用来保存表单中内容到数据库 */ ?>  
-            <?//php wp_nonce_field('update-options'); ?>  
-            <div class="form-group">
-              <label class="col-md-2 control-label">ACCESS_TOKEN</label>
-              <div class="col-md-10">
-                <input type="text" value="<?php $wx = WeiXin::getInstance(); echo $wx->getAccessToken(); ?>" class="form-control" />
-              </div>
-            </div>
-            <p>  
-                <textarea  width="600px"
-                    name="buttons" 
-                    id="buttons" 
-                    cols="40" 
-                    rows="6">{
-                                "button": [
-                                    {
-                                        "type": "view", 
-                                        "name": "长得帅", 
-                                        "url": "http://lujiejie.com"
-                                    }, 
-                                    {
-                                        "name": "菜单", 
-                                        "sub_button": [
-                                            {
-                                                "type": "view", 
-                                                "name": "百度", 
-                                                "url": "http://www.soso.com/"
-                                            }, 
-                                            {
-                                                "type": "view", 
-                                                "name": "腾讯视频", 
-                                                "url": "http://v.qq.com/"
-                                            }, 
-                                            {
-                                                "type": "view", 
-                                                "name": "腾讯网", 
-                                                "url": "http://www.qq.com/"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                         </textarea>  
-            </p>  
- 
-            <p>  
-                <!--<input type="hidden" name="action" value="update" />  
-                <input type="hidden" name="page_options" value="display_copyright_text" />  -->
-
-                <input type="submit" value="保存" class="button-primary" />  
-            </p>  
-        </form>  
-    </div>  
+		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+	   	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	   	<link rel="stylesheet" href="<?php echo $plugin_dir; ?>/meditor/meditor.css" />
+	   	<script type="text/javascript" src="<?php echo $plugin_dir; ?>/meditor/meditor.js" ></script>
+	   	<script type="text/javascript">
+		   	$(document).ready(function (){
+		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
+		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
+		   		editor.loadLocal();			//加载本地缓存菜单
+		   	});
+		   	
+	   	</script>
+	
+		<div id="editor" class="container">
+			<!--
+	        	作者：1006397539@qq.com
+	        	时间：2015-06-23
+	        	描述：微信自定义菜单编辑器demo
+	        -->
+		</div>
 <?php  
 }  
 

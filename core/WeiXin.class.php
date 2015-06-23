@@ -1,7 +1,8 @@
 <?php
 /**
-  * 微信操作类
-  * 卢杰杰
+  * Name : A class for wechat api
+  * Author : Jeremaihloo (卢杰杰)
+  * Home : lujiejie.com  
   */
 class WeiXin
 {
