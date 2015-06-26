@@ -6,6 +6,7 @@
 		<button class="btn btn-default" id="btnClearLocal">清空本地缓存菜单</button>
 		<button class="btn btn-default" id="btnLoadEmpty">加载空菜单</button>
 		<button class="btn btn-default" id="btnLoadDefault">加载模板</button>
+		<button class="btn btn-default" id="btnDeleteRemote">删除菜单</button>
 	</div>
 </div>
 <br />
@@ -39,6 +40,7 @@
 	<br>
 	<div class="footer_btn_box col-md-12">
 		<button class="btn btn-primary col-md-2 col-md-offset-5" id="save">保存</button>
+		<button class="btn btn-primary col-md-2 col-md-offset-8" id="saveAndCreate">保存并发布</button>
 	</div>	
 </div>
 
@@ -83,7 +85,7 @@
             <button type="button" class="btn btn-default" 
                data-dismiss="modal">关闭
             </button>
-            <button type="button" onclick="saveTopMenuItem()" class="btn btn-primary">
+            <button type="button" id="modalSaveTopMenuItem" class="btn btn-primary">
                保存
             </button>
          </div>
@@ -128,7 +130,7 @@
             <button type="button" class="btn btn-default" 
                data-dismiss="modal">关闭
             </button>
-            <button type="button" onclick="saveSubMenuItem()" class="btn btn-primary">
+            <button type="button" id="modalSaveSubMenuItem" class="btn btn-primary">
                保存
             </button>
          </div>

@@ -3,16 +3,24 @@
 // Author : Jeremaihloo (卢杰杰)
 // Home : lujiejie.com
 //
-var ui = "";
+
 function MEditor(){
-	var container;
+	var config = {
+		"remote_view_url":"/core/view-menu.op.php",
+		"remote_delete_url":"/core/delete-menu.op.php",
+		"remote_create_url":"/core/create-menu.op.php"
+	};
 	
+	var container;
+	var work_dir = "/wp-content/plugins/WeiXinMenuUI";
 	this.render = function (container_id) {
 		container = container_id;
-		
-		console.log("ui" + ui);
-		$("#" + container).append(ui);
-		init_ready();		
+		$.get(work_dir  + "/meditor/ui.html" , function (data) {
+			console.log("ui" + data);
+			$("#" + container).append(data);
+			init_ready();
+		});
+				
 	}
 	this.loadDefault = function () {
 		loadDefault();
@@ -29,12 +37,29 @@ function MEditor(){
 	this.setConfig = function(setConfig){
 		config = setConfig;
 	}
-	var config = {
-		"remote_view_url":"/core/view-menu.op.php",
-		"remote_delete_url":"/core/delete-menu.op.php",
-		"remote_create_url":"/core/create-menu.op.php"
-	};
-	
+	this.setWorkDir = function (workDir) {
+		work_dir = workDir;
+	}
+	this.deleteRemote = function () {
+		deleteRemote();
+	}
+	this.createRemote = function () {
+		createRemote();
+	}
+	function deleteRemote () {
+		var url = work_dir + config.remote_delete_url;
+		console.log("delete remote url :"+url);
+		$.get(url,function (data) {
+			alert("delete message :"+data);
+		});
+		loadEmpty();
+	}
+	function createRemote () {
+		$.post(work_dir + config.remote_create_url,{ buttons : menu_current  },function (data) {
+			console.log("create remote :"+data);
+			alert(data);
+		});
+	}
 	var menu_default = {
                                 "button": [
                                     {
@@ -78,7 +103,9 @@ function MEditor(){
 		
 		//control panel buttons
 		$("#btnLoadRemote").click(function () {
-   			loadRemote();
+   			var url = work_dir + config.remote_view_url;
+   			console.log("remote url "+url);
+   			loadRemote(url);
    		});
    		$("#btnLoadLocal").click(function(){
    			loadLocal();
@@ -92,6 +119,9 @@ function MEditor(){
    		$("#btnLoadDefault").click(function () {
    			loadDefault();
    		});
+   		$("#btnDeleteRemote").click(function () {
+   			deleteRemote();
+   		})
 		//----------------------------------------
 		$(".btnDeleteTopItem").click(function (){
 			deleteTopItem();
@@ -107,6 +137,10 @@ function MEditor(){
 		})
 		$("#save").click(function (){
 			save();
+		});
+		$("#saveAndCreate").click(function () {
+			save();
+			createRemote();
 		});
 		$('#itemTopEdit').on('show.bs.modal', function () {
 			if(getTopSeletedItemIndex()>-1){
@@ -139,6 +173,12 @@ function MEditor(){
 				}	
 			}
 			
+		});
+		$("#modalSaveTopMenuItem").click(function () {
+			saveTopMenuItem();
+		});
+		$("#modalSaveSubMenuItem").click(function () {
+			saveSubMenuItem();
 		});
     }
 
@@ -280,18 +320,17 @@ function MEditor(){
 	function loadRemote(url){
 		console.log("load remote url : "+url);
 		if(url!=null){
-			$.get(config.remote_view_url,function(data){
+			$.get(url,function(data){
 				if(data!=null){
-					if(data.length>0){
-						loadMenu(eval(data));
-					}else{
-						console.log("data.length <=0 !");
-					}
+					loadMenu(eval(data).menu);
 				}
 				else{
 					console.log("data is null !");
 				}
 			});	
+			console.log("get finished !")
+		}else{
+			console.log("url is null !");
 		}
 	}
 	

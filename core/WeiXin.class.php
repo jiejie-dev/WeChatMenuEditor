@@ -133,13 +133,9 @@ class WeiXin
     //自定义菜单封装-------------------------------------------------------------------------------------------
     public function createMenu($buttons){
           $create_path = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getAccessToken();
-          echo $buttons;
           $json = do_post_request($create_path,$buttons);
           $result = json_decode($json,true);
-          if($result['errcode']==0)
-              return true;
-          else
-              return false;
+          return $result;
       }
       
       public function deleteMenu(){

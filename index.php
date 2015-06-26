@@ -30,18 +30,27 @@ function wxmenu_remove() {
 if( is_admin() ) {
     /*  利用 admin_menu 钩子，添加菜单 */
     add_action('admin_menu', 'wxmenu_menu');
+	
+	//call register settings function
+	add_action( 'admin_init', 'register_settings' );
 }
-
+function register_settings(){
+	//register our settings
+	register_setting( 'wxmenu_settings-group', 'app_id' );
+	register_setting( 'wxmenu_settings-group', 'app_screct' );
+}
 function wxmenu_menu() {
     /* add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function);  */
     /* 页名称，菜单名称，访问级别，菜单别名，点击该菜单时的回调函数（用以显示设置页面） */
     add_menu_page('微信自定义菜单编辑器', '微信自定义菜单编辑器', 'administrator','wxmenu', 'wxmenu_html_page');
+	add_submenu_page('wxmenu',"设置","设置","administrator","wxmenu_settings",'wxmenu_settings_html_page');
 }
 
 function wxmenu_html_page() {
 	global $plugin_dir;
       
     ?>
+    
 		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 	   	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
@@ -66,4 +75,23 @@ function wxmenu_html_page() {
 <?php  
 }  
 
+function wxmenu_settings_html_page (){
+	?>
+	<div class="wrap">
+		<h2>微信自定义菜单设置项</h2>
+		<form method="post" action="options.php">
+			<?php settings_fields( 'wxmenu_settings-group' ); ?>
+    		<?php do_settings_sections( 'wxmenu_settings-group' ); ?>
+			<div>
+				<label for="app_id">APPID</label>
+				<input id="app_id" name="app_id" type="text" value="<?php echo esc_attr(get_option('app_id')); ?>" />
+				<label for="app_screct">APPSCRECT</label>
+				<input id="app_screct" name="app_screct" type="text"  value="<?php echo esc_attr(get_option('app_screct')); ?>" />
+				<?php submit_button(); ?>
+			</div>
+		</form>
+	</div>
+		
+	<?php
+}
 ?>
