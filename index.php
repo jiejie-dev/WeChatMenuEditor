@@ -9,7 +9,8 @@ Author URI: lujiejie.com
 License: A "Slug" license name e.g. GPL2
 */
 
-$plugin_dir = WP_PLUGIN_URL."/".dirname(plugin_basename(__FILE__));
+define('APP_URL', plugin_dir_url(__FILE__));
+define('APP_DIR', plugin_dir_path(__FILE__));
 
 /* 注册激活插件时要调用的函数 */ 
 register_activation_hook( __FILE__, 'wxmenu_install');   
@@ -47,18 +48,18 @@ function wxmenu_menu() {
 }
 
 function wxmenu_html_page() {
-	global $plugin_dir;
-      
+
     ?>
     
 		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 	   	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	   	<link rel="stylesheet" href="<?php echo $plugin_dir; ?>/meditor/meditor.css" />
-	   	<script type="text/javascript" src="<?php echo $plugin_dir; ?>/meditor/meditor.js" ></script>
+	   	<link rel="stylesheet" href="<?php echo APP_URL; ?>/meditor/meditor.css" />
+	   	<script type="text/javascript" src="<?php echo APP_URL; ?>/meditor/meditor.js" ></script>
 	   	<script type="text/javascript">
 		   	$(document).ready(function (){
 		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
+		   		editor.setWorkUrl('<?php echo APP_URL; ?>');
 		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
 		   		editor.loadLocal();			//加载本地缓存菜单
 		   	});
