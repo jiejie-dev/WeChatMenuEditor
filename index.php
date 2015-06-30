@@ -19,9 +19,11 @@ $wx = WeiXin::getInstance();
 define('APP_ID', get_option('app_id'));
 define('APP_SECRET', get_option('app_secret'));
 define('CURRENT_ACCESS_TOKEN', $wx->getAccessTokenBySource(APP_ID, APP_SECRET));
-echo 'app_id:'.APP_ID.'<br>';
-echo 'app_secret:'.APP_SECRET.'<br>';
-echo 'access_token:'.CURRENT_ACCESS_TOKEN.'<br>';
+
+//echo 'app_id:'.APP_ID.'<br>';
+//echo 'app_secret:'.APP_SECRET.'<br>';
+//echo 'access_token:'.CURRENT_ACCESS_TOKEN.'<br>';
+
 /* 注册激活插件时要调用的函数 */ 
 register_activation_hook( __FILE__, 'wxmenu_install');   
 

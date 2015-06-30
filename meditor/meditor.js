@@ -53,7 +53,7 @@ function MEditor(){
 		var url = work_url + config.remote_delete_url+"?access_token="+access_token;
 		console.log("delete remote url :"+url);
 		$.get(url,function (data) {
-			alert("delete message :"+data);
+			alert(data);
 		});
 		loadEmpty();
 	}
@@ -325,6 +325,7 @@ function MEditor(){
 		if(url!=null){
 			$.get(url+"?access_token="+access_token,function(data){
 				if(data!=null){
+					console.log('load data:'+data);
 					loadMenu(eval(data).menu);
 				}
 				else{

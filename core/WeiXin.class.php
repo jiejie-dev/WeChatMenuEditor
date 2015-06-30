@@ -144,7 +144,10 @@ class WeiXin
           $create_path = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getAccessToken();
           $json = do_post_request($create_path,$buttons);
           $result = json_decode($json,true);
-          return $result;
+          if($result['errmsg']=='ok')
+              return true;
+          else
+              return false;
       }
       
       public function deleteMenu(){
