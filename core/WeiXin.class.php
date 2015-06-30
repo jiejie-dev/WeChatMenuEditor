@@ -29,10 +29,17 @@ class WeiXin
     public function Debug($is_debug){
         $this->isDebug = $is_debug;
     }
-
+	public function setAccessToken($accessToken){
+		$this->access_token = $accessToken;
+	}
+	public function getAccessTokenBySource($app_id,$app_secret){
+		define('APP_ID', $app_id);
+		define('APP_SECRET', $app_secret);
+		return $this->getAccessToken();
+	}
 	public function getAccessToken(){
         $now = date("Y-m-d H:i:s ");
-        if(empty($access_token)){
+        if(empty($this->access_token)){
             $get_path = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.APP_ID.'&secret='.APP_SECRET;
             $json = file_get_contents($get_path);
             $result = json_decode($json,true);        
@@ -40,22 +47,24 @@ class WeiXin
             $this->latest_time = $now;
             $this->expires_in = $result['expires_in'];
             return $result['access_token'];         
+        }else{
+        	return $this->access_token;
         }
-        else{
-            $second = floor((strtotime($now)-strtotime($latest_time))%86400%60);
-                if($second>$this->expires_in){
-                    $get_path = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.APP_ID.'&secret='.APP_SECRET;
-                    $json = file_get_contents($get_path);
-                    $result = json_decode($json,true);        
-                    $this->access_token = $result['access_token'];
-                    $this->latest_time = $now;
-                    $this->expires_in = $result['expires_in'];
-                    return $result['access_token'];         
-                }
-                else{
-                    return $this->access_token;
-                }
-        }
+//      else{
+//          $second = floor((strtotime($now)-strtotime($latest_time))%86400%60);
+//              if($second>$this->expires_in){
+//                  $get_path = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.APP_ID.'&secret='.APP_SECRET;
+//                  $json = file_get_contents($get_path);
+//                  $result = json_decode($json,true);        
+//                  $this->access_token = $result['access_token'];
+//                  $this->latest_time = $now;
+//                  $this->expires_in = $result['expires_in'];
+//                  return $result['access_token'];         
+//              }
+//              else{
+//                  return $this->access_token;
+//              }
+//      }
         
 
         $get_path = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.APP_ID.'&secret='.APP_SECRET;
