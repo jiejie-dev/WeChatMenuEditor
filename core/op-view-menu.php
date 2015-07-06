@@ -1,6 +1,6 @@
 <?php 
 
-	require_once('all.require.php');
+	require_once('require-all.php');
 	
 	$wx = WeiXin::getInstance();
 	$menu = $wx->viewMenu();

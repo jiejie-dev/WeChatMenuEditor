@@ -6,12 +6,12 @@
 
 function MEditor(){
 	var config = {
-		"remote_view_url":"/core/view-menu.op.php",
-		"remote_delete_url":"/core/delete-menu.op.php",
-		"remote_create_url":"/core/create-menu.op.php"
+		"remote_view_url":"/core/op-view-menu.php",
+		"remote_delete_url":"/core/op-delete-menu.php",
+		"remote_create_url":"/core/op-create-menu.php"
 	};
 	var container;
-	var work_url = "/wp-content/plugins/WeiXinMenuUI";
+	var work_url = "/wp-content/plugins/kaensoft-weixin-adavnced/";
 	this.render = function (container_id) {
 		container = container_id;
 		$.get(work_url  + "/meditor/ui.html" , function (data) {

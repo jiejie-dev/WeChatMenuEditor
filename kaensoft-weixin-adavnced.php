@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: kaensoft-weixin-adavnced
+Plugin Name: Kaensoft Weixin Menu Adavnced
 Plugin URI: 没有
-Description: kaensoft weixin adavnced editor
+Description: kaensoft weixin menu adavnced editor
 Version: 1.0
 Author: 卢杰杰
 Author URI: lujiejie.com
@@ -12,8 +12,8 @@ License: A "Slug" license name e.g. GPL2
 define('APP_URL', plugin_dir_url(__FILE__));
 define('APP_DIR', plugin_dir_path(__FILE__));
 
-require_once(APP_DIR . 'core/common.func.php');
-require_once(APP_DIR . 'core/WeiXin.class.php');
+require_once(APP_DIR . 'core/func-common.php');
+require_once(APP_DIR . 'core/class-weixin.php');
 
 $wx = WeiXin::getInstance();
 define('APP_ID', get_option('kaensoft_weixin_appid_oauth'));
@@ -21,8 +21,8 @@ define('APP_SECRET', get_option('kaensoft_weixin_appsecret_oauth'));
 
 define('CURRENT_SERVER_MENU_CACHE', get_option('kaensoft_weixin_customize_menu_json_data_src'));
 
-if(empty(APP_ID)||empty(APP_SECRET))
-	echo '<script>alert("app_id or app_secret is empty , please get settings !");</script>';
+//if(empty(APP_ID)||empty(APP_SECRET))
+//	echo '<script>alert("app_id or app_secret is empty , please get settings !");</script>';
 
 save_app_config();
 
@@ -78,7 +78,7 @@ function wxmenu_html_page() {
 		   	$(document).ready(function (){
 		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
 		   		editor.setWorkUrl('<?php echo APP_URL; ?>');
-		   		var server_cache = <?php echo CURRENT_SERVER_MENU_CACHE;?>
+		   		var server_cache = <?php echo CURRENT_SERVER_MENU_CACHE.";";?>
 		   		editor.setServerCache(server_cache);
 		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
 		   		editor.loadLocal();			//加载本地缓存菜单

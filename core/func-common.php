@@ -20,7 +20,7 @@
      return $response;
   }
   function save_app_config(){
-  	 $path = APP_DIR."\core\config.inc.php";
+  	 $path = APP_DIR."/core/config.inc.php";
   	 $outputstring = "<?php 
   	 					define('APP_ID','".APP_ID."');\r\t
   	 					define('APP_SECRET','".APP_SECRET."');\r\t
