@@ -10,7 +10,6 @@ function MEditor(){
 		"remote_delete_url":"/core/delete-menu.op.php",
 		"remote_create_url":"/core/create-menu.op.php"
 	};
-	var access_token;
 	var container;
 	var work_url = "/wp-content/plugins/WeiXinMenuUI";
 	this.render = function (container_id) {
@@ -40,9 +39,6 @@ function MEditor(){
 	this.setWorkUrl = function (workUrl) {
 		work_url = workUrl;
 	}
-	this.setAccessToken = function (accessToken) {
-		access_token = accessToken;
-	}
 	this.deleteRemote = function () {
 		deleteRemote();
 	}
@@ -50,7 +46,7 @@ function MEditor(){
 		createRemote();
 	}
 	function deleteRemote () {
-		var url = work_url + config.remote_delete_url+"?access_token="+access_token;
+		var url = work_url + config.remote_delete_url;
 		console.log("delete remote url :"+url);
 		$.get(url,function (data) {
 			alert(data);
@@ -58,8 +54,8 @@ function MEditor(){
 		loadEmpty();
 	}
 	function createRemote () {
-		$.post(work_url + config.remote_create_url,{ buttons : menu_current,access_token : access_token  },function (data) {
-			console.log("create remote [data]:"+data+"  [access_token]:"+access_token);
+		$.post(work_url + config.remote_create_url,{ buttons : menu_current }, function (data) {
+			console.log("create remote [data]:"+data);
 			alert(data);
 		});
 	}
@@ -142,7 +138,7 @@ function MEditor(){
 			save();
 		});
 		$("#saveAndCreate").click(function () {
-			save();
+			saveLocal();
 			createRemote();
 		});
 		$('#itemTopEdit').on('show.bs.modal', function () {
@@ -323,7 +319,7 @@ function MEditor(){
 	function loadRemote(url){
 		console.log("load remote url : "+url);
 		if(url!=null){
-			$.get(url+"?access_token="+access_token,function(data){
+			$.get(url,function(data){
 				if(data!=null){
 					console.log('load data:'+data);
 					loadMenu(eval(data).menu);
