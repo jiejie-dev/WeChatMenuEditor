@@ -164,7 +164,10 @@ function MEditor(){
 				}
 				if(button.hasOwnProperty("url")){
 					$("#top_menu_content").val(button.url);				
-				}	
+				}
+				if(button.hasOwnProperty("key")){
+					$('#top_menu_content').val(button.key);
+				}
 			}
 			
 		});
@@ -181,6 +184,9 @@ function MEditor(){
 				if(sub_button.hasOwnProperty("url")){
 					$("#sub_menu_content").val(sub_button.url);
 				}	
+				if(sub_button.hasOwnProperty("key")){
+					$("#sub_menu_content").val(sub_button.key);
+				}
 			}
 			
 		});
