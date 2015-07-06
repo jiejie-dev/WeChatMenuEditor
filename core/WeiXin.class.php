@@ -144,25 +144,19 @@ class WeiXin
           $create_path = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getAccessToken();
           $json = do_post_request($create_path,$buttons);
           $result = json_decode($json,true);
-          if($result['errmsg']=='ok')
-              return true;
-          else
-              return false;
+          return $json;
       }
       
       public function deleteMenu(){
           $del_path = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$this->getAccessToken();
           $json = file_get_contents($del_path);
-          $result = json_decode($json,true);
-          if($result['errmsg']=='ok')
-              return true;
-          else
-              return false;
+//        $result = json_decode($json,true);
+          return $json;
       }
       public function viewMenu(){
           $get_path = 'https://api.weixin.qq.com/cgi-bin/menu/get?access_token='.$this->getAccessToken();
-          $result = file_get_contents($get_path);
-          return json_decode($result,true);
+          $json = file_get_contents($get_path);
+          return $json;
       }
 
       //-----------------------------------------------------------------------------------------------------------

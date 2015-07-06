@@ -1,6 +1,5 @@
 <?php 
-	include('config.inc.php');
-	include('WeiXin.class.php');
+	require_once('all.require.php');
 
 	$wx = WeiXin::getInstance();
 	$access_token = $wx->getAccessToken();

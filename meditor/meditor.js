@@ -21,6 +21,7 @@ function MEditor(){
 		});
 				
 	}
+	var server_cache;
 	this.loadDefault = function () {
 		loadDefault();
 	}
@@ -45,13 +46,18 @@ function MEditor(){
 	this.createRemote = function () {
 		createRemote();
 	}
+	this.setServerCache = function(_server_cache){
+		server_cache = _server_cache;
+	}
 	function deleteRemote () {
-		var url = work_url + config.remote_delete_url;
-		console.log("delete remote url :"+url);
-		$.get(url,function (data) {
-			alert(data);
-		});
-		loadEmpty();
+		if(confirm("此操作不可恢复！确认删除？")){
+			var url = work_url + config.remote_delete_url;
+			console.log("delete remote url :"+url);
+			$.get(url,function (data) {
+				alert(data);
+			});
+			loadEmpty();	
+		}
 	}
 	function createRemote () {
 		$.post(work_url + config.remote_create_url,{ buttons : menu_current }, function (data) {
@@ -120,7 +126,10 @@ function MEditor(){
    		});
    		$("#btnDeleteRemote").click(function () {
    			deleteRemote();
-   		})
+   		});
+   		$("#btnRemoteCache").click(function () {
+   			loadServerCache();
+   		});
 		//----------------------------------------
 		$(".btnDeleteTopItem").click(function (){
 			deleteTopItem();
@@ -134,6 +143,7 @@ function MEditor(){
 		$(".btnDeleteSubItem").click(function () {
 			deleteSubItem();
 		})
+		
 		$("#save").click(function (){
 			save();
 		});
@@ -180,7 +190,9 @@ function MEditor(){
 			saveSubMenuItem();
 		});
     }
-
+	function loadServerCache () {
+		loadMenu(server_cache);
+	}
 	function checkItemIsTopForRightVisiable(){
 		if(selected_top_item==null){
 			console.log("selected_top_item is null");
@@ -489,4 +501,3 @@ function MEditor(){
 	}
 	
 }
-

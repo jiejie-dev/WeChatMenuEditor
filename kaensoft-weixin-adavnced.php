@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: 微信菜单编辑器
+Plugin Name: kaensoft-weixin-adavnced
 Plugin URI: 没有
-Description: 微信公众号自定义菜单可视化编辑器
+Description: kaensoft weixin adavnced editor
 Version: 1.0
 Author: 卢杰杰
 Author URI: lujiejie.com
@@ -18,6 +18,8 @@ require_once(APP_DIR . 'core/WeiXin.class.php');
 $wx = WeiXin::getInstance();
 define('APP_ID', get_option('kaensoft_weixin_appid_oauth'));
 define('APP_SECRET', get_option('kaensoft_weixin_appsecret_oauth'));
+
+define('CURRENT_SERVER_MENU_CACHE', get_option('kaensoft_weixin_customize_menu_json_data_src'));
 
 if(empty(APP_ID)||empty(APP_SECRET))
 	echo '<script>alert("app_id or app_secret is empty , please get settings !");</script>';
@@ -59,8 +61,8 @@ function register_settings(){
 function wxmenu_menu() {
     /* add_options_page( $page_title, $menu_title, $capability, $menu_slug, $function);  */
     /* 页名称，菜单名称，访问级别，菜单别名，点击该菜单时的回调函数（用以显示设置页面） */
-    add_menu_page('微信菜单编辑器', '微信菜单编辑器', 'administrator','wxmenu', 'wxmenu_html_page');
-	add_submenu_page('wxmenu',"设置","设置","administrator","wxmenu_settings",'wxmenu_settings_html_page');
+    add_menu_page('WeChat Menu Editor', 'WeChat Menu Editor', 'administrator','wxmenu', 'wxmenu_html_page');
+	add_submenu_page('wxmenu',"Settings","Settings","administrator","wxmenu_settings",'wxmenu_settings_html_page');
 }
 
 function wxmenu_html_page() {
@@ -76,6 +78,7 @@ function wxmenu_html_page() {
 		   	$(document).ready(function (){
 		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
 		   		editor.setWorkUrl('<?php echo APP_URL; ?>');
+		   		editor.setServerCache('<?php echo CURRENT_SERVER_MENU_CACHE; ?>');
 		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
 		   		editor.loadLocal();			//加载本地缓存菜单
 		   	});
