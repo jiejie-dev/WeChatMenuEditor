@@ -48,6 +48,7 @@ function MEditor(){
 	}
 	this.setServerCache = function(_server_cache){
 		server_cache = _server_cache;
+		console.log('set server_cache : '+ JSON.stringify(server_cache));
 	}
 	function deleteRemote () {
 		if(confirm("此操作不可恢复！确认删除？")){
@@ -127,7 +128,7 @@ function MEditor(){
    		$("#btnDeleteRemote").click(function () {
    			deleteRemote();
    		});
-   		$("#btnRemoteCache").click(function () {
+   		$("#btnServerCache").click(function () {
    			loadServerCache();
    		});
 		//----------------------------------------
