@@ -68,35 +68,36 @@ function wxmenu_menu() {
 function wxmenu_html_page() {
 
     ?>
-    
-		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-	   	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	   	<link rel="stylesheet" href="<?php echo APP_URL; ?>/meditor/meditor.css" />
-	   	<script type="text/javascript" src="<?php echo APP_URL; ?>/meditor/meditor.js" ></script>
-	   	<script type="text/javascript">
-		   	$(document).ready(function (){
-		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
-		   		editor.setWorkUrl('<?php echo APP_URL; ?>');
-                <?php
-                    if(!empty(CURRENT_SERVER_MENU_CACHE)){
-                        echo "var server_cache =".CURRENT_SERVER_MENU_CACHE.";";
-                        echo "editor.setServerCache(server_cache)";
-                    }
-                ?>
-		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
-		   		editor.loadLocal();			//加载本地缓存菜单
-		   	});
-		   	
-	   	</script>
-	
-		<div id="editor" class="container">
-			<!--
+
+   	<script type="text/javascript">
+   	alert(1);
+   	$(document).ready(function(){
+   		alert(2);
+
+   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
+   		editor.setWorkUrl('<?php echo APP_URL; ?>');
+   		alert(3);
+		<?php
+			if(!empty(CURRENT_SERVER_MENU_CACHE)){
+			    echo "var server_cache =".CURRENT_SERVER_MENU_CACHE.";";
+			    echo "editor.setServerCache(server_cache)";
+			}
+		?>
+		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
+		editor.loadLocal();			//加载本地缓存菜单
+   	});
+   		
+   	</script>
+
+	<div id="editor" class="container">
+	<!--
 	        	作者：1006397539@qq.com
 	        	时间：2015-06-23
 	        	描述：微信自定义菜单编辑器demo
-	        -->
-		</div>
+       	 -->
+	<?php include(APP_DIR.'/meditor/ui.php'); ?>
+
+	</div>
 <?php  
 }  
 
@@ -119,4 +120,24 @@ function wxmenu_settings_html_page (){
 		
 	<?php
 }
+
+/** Add Custom jQuery and CSS files to a Theme */  
+function init_my_resource() {  
+	
+	//wp_deregister_script('jquery'); 
+
+	wp_register_script( 'myjquery',  'http://libs.baidu.com/jquery/2.0.0/jquery.min.js' );
+	wp_register_script('meditor',APP_URL.'/meditor/meditor.js');  
+	wp_register_style( 'meditor', APP_URL.'meditor/meditor.css' );  
+	wp_register_style('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css');
+	wp_register_script('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js');
+
+	wp_enqueue_script( 'myjquery' );  
+	wp_enqueue_style( 'meditor' );  
+	wp_enqueue_script('meditor');
+	wp_enqueue_script('bootstrap');
+	wp_enqueue_style('bootstrap');
+}  
+add_action( 'init', 'init_my_resource' );
+
 ?>

@@ -12,14 +12,11 @@ function MEditor(){
 	};
 	var container;
 	var work_url = "/wp-content/plugins/kaensoft-weixin-adavnced/";
+
 	this.render = function (container_id) {
 		container = container_id;
-		$.get(work_url  + "/meditor/ui.html" , function (data) {
-			console.log("ui" + data);
-			$("#" + container).append(data);
-			init_ready();
-		});
-				
+        		init_ready();
+        		alert("init");
 	}
 	var server_cache;
 	this.loadDefault = function () {

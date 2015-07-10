@@ -7,7 +7,7 @@
 		<button class="btn btn-default" id="btnLoadEmpty">加载空菜单</button>
 		<button class="btn btn-default" id="btnLoadDefault">加载默认模板</button>
 		<button class="btn btn-default" id="btnDeleteRemote">删除公众平台菜单</button>
-		<button class="btn btn-default" id="btnServerCache">加载服务器缓存菜单</button>
+		<button class="btn -default" id="btnServerCache">加载服务器缓存菜单</button>
 	</div>
 </div>
 <br />
