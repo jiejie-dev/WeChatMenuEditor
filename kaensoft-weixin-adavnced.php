@@ -78,8 +78,12 @@ function wxmenu_html_page() {
 		   	$(document).ready(function (){
 		   		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
 		   		editor.setWorkUrl('<?php echo APP_URL; ?>');
-		   		var server_cache = <?php echo CURRENT_SERVER_MENU_CACHE.";";?>
-		   		editor.setServerCache(server_cache);
+                <?php
+                    if(!empty(CURRENT_SERVER_MENU_CACHE)){
+                        echo "var server_cache =".CURRENT_SERVER_MENU_CACHE.";";
+                        echo "editor.setServerCache(server_cache)";
+                    }
+                ?>
 		   		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
 		   		editor.loadLocal();			//加载本地缓存菜单
 		   	});
