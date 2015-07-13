@@ -15,8 +15,7 @@ function MEditor(){
 
 	this.render = function (container_id) {
 		container = container_id;
-        		init_ready();
-        		alert("init");
+        init_ready();
 	}
 	var server_cache;
 	this.loadDefault = function () {

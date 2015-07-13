@@ -70,15 +70,11 @@ function wxmenu_html_page() {
     ?>
 
    	<script type="text/javascript">
-   	alert(1);
    	$(document).ready(function(){
-   		alert(2);
-
    		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
    		editor.setWorkUrl('<?php echo APP_URL; ?>');
-   		alert(3);
 		<?php
-			if(!empty(CURRENT_SERVER_MENU_CACHE)){
+			if(defined(CURRENT_SERVER_MENU_CACHE)){
 			    echo "var server_cache =".CURRENT_SERVER_MENU_CACHE.";";
 			    echo "editor.setServerCache(server_cache)";
 			}
