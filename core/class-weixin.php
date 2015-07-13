@@ -143,7 +143,7 @@ class WeiXin
     public function createMenu($buttons){
           $create_path = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getAccessToken();
           $json = do_post_request($create_path,$buttons);
-          $result = json_decode($json,true);
+//          $result = json_decode($json,true);
           return $json;
       }
       

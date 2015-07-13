@@ -7,7 +7,7 @@
 		<button class="btn btn-default" id="btnLoadEmpty">加载空菜单</button>
 		<button class="btn btn-default" id="btnLoadDefault">加载默认模板</button>
 		<button class="btn btn-default" id="btnDeleteRemote">删除公众平台菜单</button>
-		<button class="btn -default" id="btnServerCache">加载服务器缓存菜单</button>
+		<button class="btn btn-default" id="btnServerCache">加载服务器缓存菜单</button>
 	</div>
 </div>
 <br />
@@ -17,12 +17,9 @@
 			<li class="list-group-item top_level_manager">
 				一级菜单
 				<span class="badge"><a href="#" data-toggle="modal" data-target="#itemTopEdit">编辑</a></span>
-				<span class="badge"><a href="#" class="btnAddTopItem">添加</a></span>
 				<span class="badge"><a class="btnDeleteTopItem" href="#">删除</a></span>
+                <span class="badge"><a href="#" class="btnAddTopItem">添加</a></span>
 			</li>
-			<li class="list-group-item top_level_item">lujiejie</li>
-			<li class="list-group-item top_level_item">lidapeng</li>
-			<li class="list-group-item top_level_item">zhouenlai</li>
 		</ul>
 	</div>
 	<div class="sub_level_view col-md-6">
@@ -33,9 +30,6 @@
 				<span class="badge"><a class="btnDeleteSubItem" href="#">删除</a></span>
 				<span class="badge"><a class="btnAddSubItem" href="#">添加</a></span>							
 			</li>
-			<li class="list-group-item sub_level_item">lujiejie1</li>
-			<li class="list-group-item sub_level_item">lujiejie2</li>
-			<li class="list-group-item sub_level_item">lujiejie3</li>
 		</ul>
 	</div>
 	<br>

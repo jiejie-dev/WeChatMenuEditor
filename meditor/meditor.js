@@ -113,7 +113,7 @@ function MEditor(){
    			loadLocal();
    		});
    		$("#btnClearLocal").click(function(){
-   			clearLocal();
+   			cearLocal();
    		});
    		$("#btnLoadEmpty").click(function () {
    			loadEmpty();
@@ -194,7 +194,11 @@ function MEditor(){
 		});
     }
 	function loadServerCache () {
-		loadMenu(server_cache);
+        if(!server_cache){
+            alert("服务器没有缓存！");
+        }else{
+            loadMenu(server_cache);
+        }
 	}
 	function checkItemIsTopForRightVisiable(){
 		if(selected_top_item==null){
@@ -312,9 +316,9 @@ function MEditor(){
 	function loadLocal () {
 		if(window.localStorage){
 			if(localStorage.WX_MENU){
-				console.log("local menu :")
+				console.log("local menu :");
 				console.log(localStorage.WX_MENU);
-				var menu = JSON.parse(localStorage.WX_MENU);
+                var menu = JSON.parse(localStorage.WX_MENU);
 				loadMenu(menu);
 			}
 			else{
