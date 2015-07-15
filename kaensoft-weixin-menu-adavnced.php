@@ -30,26 +30,26 @@ save_app_config();
 //echo 'app_secret:'.APP_SECRET.'<br>';
 //echo 'access_token:'.CURRENT_ACCESS_TOKEN.'<br>';
 
-/* 注册激活插件时要调用的函数 */ 
-register_activation_hook( __FILE__, 'wxmenu_install');   
+/* 注册激活插件时要调用的函数 */
+register_activation_hook( __FILE__, 'wxmenu_install');
 
-/* 注册停用插件时要调用的函数 */ 
-register_deactivation_hook( __FILE__, 'wxmenu_remove' );  
+/* 注册停用插件时要调用的函数 */
+register_deactivation_hook( __FILE__, 'wxmenu_remove' );
 
-function wxmenu_install() {  
-    /* 在数据库的 wp_options 表中添加一条记录，第二个参数为默认值 */ 
-    //add_option("display_copyright_text", "<p style='color:red'>本站点所有文章均为原创，转载请注明出处！</p>", '', 'yes');  
+function wxmenu_install() {
+    /* 在数据库的 wp_options 表中添加一条记录，第二个参数为默认值 */
+    //add_option("display_copyright_text", "<p style='color:red'>本站点所有文章均为原创，转载请注明出处！</p>", '', 'yes');
 }
 
-function wxmenu_remove() {  
-    /* 删除 wp_options 表中的对应记录 */ 
-    //delete_option('display_copyright_text');  
+function wxmenu_remove() {
+    /* 删除 wp_options 表中的对应记录 */
+    //delete_option('display_copyright_text');
 }
 
 if( is_admin() ) {
     /*  利用 admin_menu 钩子，添加菜单 */
     add_action('admin_menu', 'wxmenu_menu');
-	
+
 	//call register settings function
 	add_action( 'admin_init', 'register_settings' );
 }
@@ -82,7 +82,7 @@ function wxmenu_html_page() {
 		editor.render("editor");	//将编辑器渲染到id为editor的容器里面
 		editor.loadLocal();			//加载本地缓存菜单
    	});
-   		
+
    	</script>
 
 	<div id="editor" class="container">
@@ -94,8 +94,8 @@ function wxmenu_html_page() {
 	<?php include(APP_DIR.'/meditor/ui.php'); ?>
 
 	</div>
-<?php  
-}  
+<?php
+}
 
 function wxmenu_settings_html_page (){
 	?>
@@ -113,27 +113,27 @@ function wxmenu_settings_html_page (){
 			</div>
 		</form>
 	</div>
-		
+
 	<?php
 }
 
-/** Add Custom jQuery and CSS files to a Theme */  
-function init_my_resource() {  
-	
-	//wp_deregister_script('jquery'); 
+/** Add Custom jQuery and CSS files to a Theme */
+function init_my_resource() {
+
+	//wp_deregister_script('jquery');
 
 	wp_register_script( 'myjquery',  'http://libs.baidu.com/jquery/2.0.0/jquery.min.js' );
-	wp_register_script('meditor',APP_URL.'/meditor/meditor.js');  
-	wp_register_style( 'meditor', APP_URL.'meditor/meditor.css' );  
+	wp_register_script('meditor',APP_URL.'/meditor/meditor.js');
+	wp_register_style( 'meditor', APP_URL.'meditor/meditor.css' );
 	wp_register_style('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css');
 	wp_register_script('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js');
 
-	wp_enqueue_script( 'myjquery' );  
-	wp_enqueue_style( 'meditor' );  
+	wp_enqueue_script( 'myjquery' );
+	wp_enqueue_style( 'meditor' );
 	wp_enqueue_script('meditor');
 	wp_enqueue_script('bootstrap');
 	wp_enqueue_style('bootstrap');
-}  
+}
 add_action( 'init', 'init_my_resource' );
 
 ?>
