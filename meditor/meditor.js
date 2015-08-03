@@ -260,9 +260,12 @@ function MEditor(){
 		if($("#top_menu_action").val() == "sub_button"){
 			current.sub_button = [];
 		}
-		else{
+		else if($("#top_menu_action").val() == "view"){
 			current.type = $("#top_menu_action").val();
 			current.url = $("#top_menu_content").val();
+		}else{
+			current.type = $("#top_menu_action").val();
+			current.key = $("#top_menu_content").val();
 		}
 		
 		$("#itemTopEdit").modal("hide");
