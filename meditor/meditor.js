@@ -50,14 +50,14 @@ function MEditor(){
 		if(confirm("此操作不可恢复！确认删除？")){
 			var url = work_url + config.remote_delete_url;
 			console.log("delete remote url :"+url);
-			$.get(url,function (data) {
+			jQuery.get(url,function (data) {
 				alert(data);
 			});
 			loadEmpty();	
 		}
 	}
 	function createRemote () {
-		$.post(work_url + config.remote_create_url,{ buttons : menu_current }, function (data) {
+		jQuery.post(work_url + config.remote_create_url,{ buttons : menu_current }, function (data) {
 			console.log("create remote [data]:"+data);
 			alert(data);
 		});
@@ -104,92 +104,92 @@ function MEditor(){
 		checkItemIsTopForRightVisiable();
 		
 		//control panel buttons
-		$("#btnLoadRemote").click(function () {
+		jQuery("#btnLoadRemote").click(function () {
    			var url = work_url + config.remote_view_url;
    			console.log("remote url "+url);
    			loadRemote(url);
    		});
-   		$("#btnLoadLocal").click(function(){
+   		jQuery("#btnLoadLocal").click(function(){
    			loadLocal();
    		});
-   		$("#btnClearLocal").click(function(){
+   		jQuery("#btnClearLocal").click(function(){
    			cearLocal();
    		});
-   		$("#btnLoadEmpty").click(function () {
+   		jQuery("#btnLoadEmpty").click(function () {
    			loadEmpty();
    		});
-   		$("#btnLoadDefault").click(function () {
+   		jQuery("#btnLoadDefault").click(function () {
    			loadDefault();
    		});
-   		$("#btnDeleteRemote").click(function () {
+   		jQuery("#btnDeleteRemote").click(function () {
    			deleteRemote();
    		});
-   		$("#btnServerCache").click(function () {
+   		jQuery("#btnServerCache").click(function () {
    			loadServerCache();
    		});
 		//----------------------------------------
-		$(".btnDeleteTopItem").click(function (){
+		jQuery(".btnDeleteTopItem").click(function (){
 			deleteTopItem();
 		});
-		$(".btnAddTopItem").click(function (){
+		jQuery(".btnAddTopItem").click(function (){
 			addTopItem();
 		});
-		$(".btnAddSubItem").click(function () {
+		jQuery(".btnAddSubItem").click(function () {
 			addSubItem();
 		})
-		$(".btnDeleteSubItem").click(function () {
+		jQuery(".btnDeleteSubItem").click(function () {
 			deleteSubItem();
 		})
 		
-		$("#save").click(function (){
+		jQuery("#save").click(function (){
 			save();
 		});
-		$("#saveAndCreate").click(function () {
+		jQuery("#saveAndCreate").click(function () {
 			saveLocal();
 			createRemote();
 		});
-		$('#itemTopEdit').on('show.bs.modal', function () {
+		jQuery('#itemTopEdit').on('show.bs.modal', function () {
 			if(getTopSeletedItemIndex()>-1){
 				var button = menu_current.button[getTopSeletedItemIndex()];
-				$("#top_menu_name").val(button.name);
+				jQuery("#top_menu_name").val(button.name);
 				if(button.hasOwnProperty("type")){
-					$("#top_menu_action").val(button.type);				
+					jQuery("#top_menu_action").val(button.type);				
 				}
 				else{
-					$("#top_menu_action").val("sub_button");
+					jQuery("#top_menu_action").val("sub_button");
 				}
 				if(button.hasOwnProperty("url")){
-					$("#top_menu_content").val(button.url);				
+					jQuery("#top_menu_content").val(button.url);				
 				}
 				if(button.hasOwnProperty("key")){
-					$('#top_menu_content').val(button.key);
+					jQuery('#top_menu_content').val(button.key);
 				}
 			}
 			
 		});
-		$('#itemSubEdit').on('show.bs.modal', function () {
+		jQuery('#itemSubEdit').on('show.bs.modal', function () {
 			if(getSubSeletedItemIndex()>-1){
 				var sub_button = menu_current.button[getTopSeletedItemIndex()].sub_button[getSubSeletedItemIndex()];
-				$("#sub_menu_name").val(sub_button.name);
+				jQuery("#sub_menu_name").val(sub_button.name);
 				if(sub_button.hasOwnProperty("type")){
-					$("#sub_menu_action").val(sub_button.type);
+					jQuery("#sub_menu_action").val(sub_button.type);
 				}
 				else{
-					$("#sub_menu_action").val(sub_button.type);
+					jQuery("#sub_menu_action").val(sub_button.type);
 				}
 				if(sub_button.hasOwnProperty("url")){
-					$("#sub_menu_content").val(sub_button.url);
+					jQuery("#sub_menu_content").val(sub_button.url);
 				}	
 				if(sub_button.hasOwnProperty("key")){
-					$("#sub_menu_content").val(sub_button.key);
+					jQuery("#sub_menu_content").val(sub_button.key);
 				}
 			}
 			
 		});
-		$("#modalSaveTopMenuItem").click(function () {
+		jQuery("#modalSaveTopMenuItem").click(function () {
 			saveTopMenuItem();
 		});
-		$("#modalSaveSubMenuItem").click(function () {
+		jQuery("#modalSaveSubMenuItem").click(function () {
 			saveSubMenuItem();
 		});
     }
@@ -203,13 +203,13 @@ function MEditor(){
 	function checkItemIsTopForRightVisiable(){
 		if(selected_top_item==null){
 			console.log("selected_top_item is null");
-			$(".sub_level_view").hide();
+			jQuery(".sub_level_view").hide();
 		}else{
 			if(!hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
-				$(".sub_level_view").hide();
+				jQuery(".sub_level_view").hide();
 				console.log("当前一级菜单没有子菜单！")
 			}else{
-				$(".sub_level_view").show();
+				jQuery(".sub_level_view").show();
 				console.log("当前一级菜单有子菜单！")
 			}
 		}
@@ -221,8 +221,8 @@ function MEditor(){
 	
 	function getTopItemIndex(item) {
 		var item_index = -1;
-		$(".top_level_item").each(function(index) {
-			if($(item).text()==$(this).text()){
+		jQuery(".top_level_item").each(function(index) {
+			if(jQuery(item).text()==jQuery(this).text()){
 				item_index = index;
 				return false;
 			}
@@ -236,8 +236,8 @@ function MEditor(){
 	
 	function getSubItemIndex(item) {
 		var item_index = -1;
-		$(".sub_level_item").each(function(index) {
-			if($(item).text()==$(this).text()){
+		jQuery(".sub_level_item").each(function(index) {
+			if(jQuery(item).text()==jQuery(this).text()){
 				item_index = index;
 				return false;
 			}
@@ -256,19 +256,19 @@ function MEditor(){
 	function saveTopMenuItem() {
 		menu_current.button[getTopSeletedItemIndex()] = new Object();
 		var current = menu_current.button[getTopSeletedItemIndex()];
-		current.name = $("#top_menu_name").val();
-		if($("#top_menu_action").val() == "sub_button"){
+		current.name = jQuery("#top_menu_name").val();
+		if(jQuery("#top_menu_action").val() == "sub_button"){
 			current.sub_button = [];
 		}
-		else if($("#top_menu_action").val() == "view"){
-			current.type = $("#top_menu_action").val();
-			current.url = $("#top_menu_content").val();
+		else if(jQuery("#top_menu_action").val() == "view"){
+			current.type = jQuery("#top_menu_action").val();
+			current.url = jQuery("#top_menu_content").val();
 		}else{
-			current.type = $("#top_menu_action").val();
-			current.key = $("#top_menu_content").val();
+			current.type = jQuery("#top_menu_action").val();
+			current.key = jQuery("#top_menu_content").val();
 		}
 		
-		$("#itemTopEdit").modal("hide");
+		jQuery("#itemTopEdit").modal("hide");
 		
 		console.log("save top menu item :");
 		console.log(JSON.stringify(menu_current));
@@ -280,15 +280,15 @@ function MEditor(){
 	function saveSubMenuItem() {
 		menu_current.button[getTopSeletedItemIndex()].sub_button[getSubSeletedItemIndex()] = new Object();
 		var current = menu_current.button[getTopSeletedItemIndex()].sub_button[getSubSeletedItemIndex()];
-		current.name = $("#sub_menu_name").val();
-		current.type = $("#sub_menu_action").val();
+		current.name = jQuery("#sub_menu_name").val();
+		current.type = jQuery("#sub_menu_action").val();
 		if(current.type == "click"){
-			current.key = $("#sub_menu_content").val();
+			current.key = jQuery("#sub_menu_content").val();
 		}
 		else{
-			current.url = $("#sub_menu_content").val();
+			current.url = jQuery("#sub_menu_content").val();
 		}
-		$("#itemSubEdit").modal("hide");
+		jQuery("#itemSubEdit").modal("hide");
 		
 		console.log("save sub menu item :");
 		console.log(JSON.stringify(menu_current));
@@ -341,7 +341,7 @@ function MEditor(){
 	function loadRemote(url){
 		console.log("load remote url : "+url);
 		if(url!=null){
-			$.get(url,function(data){
+			jQuery.get(url,function(data){
 				if(data!=null){
 					console.log('load data:'+data);
 					loadMenu(eval(data).menu);
@@ -376,8 +376,8 @@ function MEditor(){
 	}
 	
 	function emptySubItemHtml(){
-		$(".sub_level_item").each(function(index){
-			$(this).remove();
+		jQuery(".sub_level_item").each(function(index){
+			jQuery(this).remove();
 		});
 	}
 	
@@ -396,20 +396,20 @@ function MEditor(){
 		emptyTopItemHtml();
 		emptySubItemHtml();
 		for(var i=0; i<menu.button.length; i++){
-			var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
-			$(addItem).text(menu.button[i].name);
-			$(addItem).attr("id","top_level_item_id_" + i);
+			var addItem = jQuery("<li class=\"list-group-item top_level_item\"></li>").appendTo(jQuery(".top_level_box .list-group"));
+			jQuery(addItem).text(menu.button[i].name);
+			jQuery(addItem).attr("id","top_level_item_id_" + i);
 			resgister();
 		}
 	}
 
 	function addTopItem(){
-		if($(".top_level_item").length>=3){
+		if(jQuery(".top_level_item").length>=3){
 			alert("一级菜单不能超过三个！");
 		}else{
-			var addItem = $("<li class=\"list-group-item top_level_item\"></li>").appendTo($(".top_level_box .list-group"));
-			$(addItem).text("一级菜单");
-			$(addItem).attr("id","top_level_item_id_" + ($(".top_level_item").length-1));
+			var addItem = jQuery("<li class=\"list-group-item top_level_item\"></li>").appendTo(jQuery(".top_level_box .list-group"));
+			jQuery(addItem).text("一级菜单");
+			jQuery(addItem).attr("id","top_level_item_id_" + (jQuery(".top_level_item").length-1));
 			var button = new Object();
 			button.name = "一级菜单";
 			menu_current.button.push(button);
@@ -419,12 +419,12 @@ function MEditor(){
 	}
 
 	function addSubItem(){
-		if($(".sub_level_item").length>=5){
+		if(jQuery(".sub_level_item").length>=5){
 			alert("二级菜单不能超过五个！");
 		}else{
 			if(hasSubMenu(menu_current.button[getTopSeletedItemIndex()])){
-				var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
-				$(addItem).text("二级菜单");
+				var addItem = jQuery("<li class=\"list-group-item sub_level_item\"></li>").appendTo(jQuery(".sub_level_view .list-group"));
+				jQuery(addItem).text("二级菜单");
 				var sub_button = new Object();
 				sub_button.name = "二级菜单";
 				menu_current.button[getTopSeletedItemIndex()].sub_button.push(sub_button);
@@ -438,30 +438,30 @@ function MEditor(){
 	
 	function deleteTopItem(){
 		emptySelectedTopItemData();
-		$(selected_top_item).remove();
+		jQuery(selected_top_item).remove();
 		selected_top_item = null;
 		saveLocal();
 	}
 
 	function deleteSubItem(){
 		emptySelectedSubItemData();
-		$(selected_sub_item).remove();
+		jQuery(selected_sub_item).remove();
 		selected_sub_item = null;
 		saveLocal();
 	}
 
 	function registerTopItem(item){
-		$(item).unbind("click");
-		$(item).click(function (){
-			$(".top_level_box .top_level_item").each(function(index){
-				$(this).css("background-color","white");
+		jQuery(item).unbind("click");
+		jQuery(item).click(function (){
+			jQuery(".top_level_box .top_level_item").each(function(index){
+				jQuery(this).css("background-color","white");
 			});
-			$(this).css("background-color","yellow");
-			selected_top_item = $(this);
+			jQuery(this).css("background-color","yellow");
+			selected_top_item = jQuery(this);
 			emptySubItemHtml();
-			var index = parseInt($(this).attr("id").replace("top_level_item_id_",""));
+			var index = parseInt(jQuery(this).attr("id").replace("top_level_item_id_",""));
 
-			$(".sub_level_manager").find("font").text(menu_current.button[index].name);
+			jQuery(".sub_level_manager").find("font").text(menu_current.button[index].name);
 
 			if(!hasSubMenu(menu_current.button[index])){
 				
@@ -469,8 +469,8 @@ function MEditor(){
 			else{
 				if(menu_current.button[index].hasOwnProperty("sub_button")){
 						for(var i =0;i<menu_current.button[index].sub_button.length;i++){
-						var addItem = $("<li class=\"list-group-item sub_level_item\"></li>").appendTo($(".sub_level_view .list-group"));
-						$(addItem).text(menu_current.button[index].sub_button[i].name);
+						var addItem = jQuery("<li class=\"list-group-item sub_level_item\"></li>").appendTo(jQuery(".sub_level_view .list-group"));
+						jQuery(addItem).text(menu_current.button[index].sub_button[i].name);
 						registerSubItem(addItem);
 					}	
 				}
@@ -480,33 +480,33 @@ function MEditor(){
 	}
 	
 	function registerSubItem(item){
-		$(item).unbind("click");
-		$(item).click(function (){
-			$(".sub_level_view .sub_level_item").each(function(index){
-				$(this).css("background-color","white");
+		jQuery(item).unbind("click");
+		jQuery(item).click(function (){
+			jQuery(".sub_level_view .sub_level_item").each(function(index){
+				jQuery(this).css("background-color","white");
 			});
-			$(this).css("background-color","yellow");
-			selected_sub_item = $(this);
+			jQuery(this).css("background-color","yellow");
+			selected_sub_item = jQuery(this);
 		});
 	}
 	
 	function resgister(){
-		$(".top_level_box .top_level_item").click(function (){
-				registerTopItem($(this));
+		jQuery(".top_level_box .top_level_item").click(function (){
+				registerTopItem(jQuery(this));
 				
 		});
 
-		$(".sub_level_view .sub_level_item").click(function (){
-			registerSubItem($(this));
+		jQuery(".sub_level_view .sub_level_item").click(function (){
+			registerSubItem(jQuery(this));
 		});
 	}
 	
 	function emptyTopItemHtml () {
 		console.log("empty top item html")
-		console.log("top_level_item length :"+$(".top_level_box").length);
-		$(".top_level_item").each(function(index){
-			console.log($(this).text());
-			$(this).remove();
+		console.log("top_level_item length :"+jQuery(".top_level_box").length);
+		jQuery(".top_level_item").each(function(index){
+			console.log(jQuery(this).text());
+			jQuery(this).remove();
 		});
 	}
 	

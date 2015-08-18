@@ -70,7 +70,7 @@ function wxmenu_html_page() {
     ?>
 
    	<script type="text/javascript">
-   	$(document).ready(function(){
+   	jQuery(document).ready(function($){
    		var editor = new MEditor();  //实例化一个自定义菜单编辑器类的实例
    		editor.setWorkUrl('<?php echo APP_URL; ?>');
 		<?php
@@ -120,15 +120,15 @@ function wxmenu_settings_html_page (){
 /** Add Custom jQuery and CSS files to a Theme */
 function init_my_resource() {
 
-	//wp_deregister_script('jquery');
+//	wp_deregister_script('jquery');
 
-	wp_register_script( 'myjquery',  'http://libs.baidu.com/jquery/2.0.0/jquery.min.js' );
+//	wp_register_script( 'myjquery',  'http://libs.baidu.com/jquery/2.0.0/jquery.min.js' );
 	wp_register_script('meditor',APP_URL.'/meditor/meditor.js');
 	wp_register_style( 'meditor', APP_URL.'meditor/meditor.css' );
 	wp_register_style('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css');
 	wp_register_script('bootstrap','http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js');
 
-	wp_enqueue_script( 'myjquery' );
+//	wp_enqueue_script( 'myjquery' );
 	wp_enqueue_style( 'meditor' );
 	wp_enqueue_script('meditor');
 	wp_enqueue_script('bootstrap');
